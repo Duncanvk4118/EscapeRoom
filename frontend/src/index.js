@@ -3,6 +3,11 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { BrowserRouter, Routes, Route } from "react-router";
+import {Quest} from "./Pages/Question";
+import {Scanner} from "./Pages/Scanner";
+import {Register} from "./Pages/Register";
+import {Login} from "./Pages/Login";
+import {Leaderboard} from "./Pages/Leaderboard";
 
 const root = document.getElementById("root");
 
@@ -12,16 +17,16 @@ ReactDOM.createRoot(root).render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />} />
-      <Route path="/login" element={<h1>Login into account</h1>} />
-      <Route path="/create" element={<h1>Create a new account</h1>} />
-      <Route path="/scan" element={<h1>Scan your QR code</h1>} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/create" element={<Register />} />
+      <Route path="/scan" element={<Scanner />} />
       <Route
         path="/scan/:questId"
-        element={<h1>Scan your QR code with ID: {questId}</h1>}
+        element={<Quest questId={questId} />}
       />
       <Route
         path="/leaderboard"
-        element={<h1>See which team is on the top</h1>}
+        element={<Leaderboard />}
       />
     </Routes>
   </BrowserRouter>
