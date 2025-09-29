@@ -1,17 +1,28 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import { BrowserRouter, Routes, Route } from "react-router";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+const root = document.getElementById("root");
+
+const questId = window.location.pathname.split("/scan/")[1];
+
+ReactDOM.createRoot(root).render(
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<App />} />
+      <Route path="/login" element={<h1>Login into account</h1>} />
+      <Route path="/create" element={<h1>Create a new account</h1>} />
+      <Route path="/scan" element={<h1>Scan your QR code</h1>} />
+      <Route
+        path="/scan/:questId"
+        element={<h1>Scan your QR code with ID: {questId}</h1>}
+      />
+      <Route
+        path="/leaderboard"
+        element={<h1>See which team is on the top</h1>}
+      />
+    </Routes>
+  </BrowserRouter>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
