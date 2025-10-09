@@ -86,7 +86,7 @@ export default function App() {
             />
             <button
               type="submit"
-              className="bg-orange-500 hover:bg-orange-400 p-3 md:p-4 rounded-full text-white mr-2 transition"
+              className="bg-orange-500 hover:bg-orange-400 p-3 md:p-4 rounded-full text-white transition"
             >
               <Search className="w-3 h-3 md:w-5 md:h-5" />
             </button>
