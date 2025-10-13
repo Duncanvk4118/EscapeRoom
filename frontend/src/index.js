@@ -8,6 +8,7 @@ import React from "react";
  import {Register} from "./Pages/Register";
  import {Login} from "./Pages/Login";
  import {Leaderboard} from "./Pages/Leaderboard";
+import {CreateAssignment} from "./Pages/Assignments/CreateAssignment";
 
  const root = document.getElementById("root");
 
@@ -18,7 +19,8 @@ import React from "react";
      <Routes>
        <Route path="/" element={<App />} />
        <Route path="/login" element={<Login />} />
-       <Route path="/create" element={<Register />} />
+       <Route path="/register" element={<Register />} />
+       <Route path="/assignments/create" element={<CreateAssignment />} />
        <Route path="/scan" element={<Scanner />} />
        <Route
          path="/scan/:questId"
