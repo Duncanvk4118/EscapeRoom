@@ -15,8 +15,6 @@ const user = null;
 
  const root = document.getElementById("root");
 
- const questId = window.location.pathname.split("/scan/")[1];
-
  ReactDOM.createRoot(root).render(
    <BrowserRouter>
      <Routes>
@@ -31,7 +29,7 @@ const user = null;
        <Route path="/scan" element={<Scanner />} />
        <Route
          path="/scan/:questId"
-         element={<Quest questId={questId} />}
+         element={<Quest />}
        />
        <Route
          path="/leaderboard"
