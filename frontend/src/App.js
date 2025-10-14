@@ -15,6 +15,7 @@ export default function App() {
             <Link to="/map" className="hover:text-orange-500 transition">Map</Link>
               <Link to="/scan" className="hover:text-orange-500 transition">Scannen</Link>
             <Link to="/leaderboard" className="hover:text-orange-500 transition">Leaderboard</Link>
+
             <Link to="/login" className="text-orange-500 outline outline-orange-500 hover:text-white hover:bg-orange-500 p-2 rounded-full transition">Login</Link>
           </nav>
 

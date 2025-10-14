@@ -1,14 +1,17 @@
-import React from "react";
+import React, {useState} from "react";
  import ReactDOM from "react-dom/client";
  import "./index.css";
  import App from "./App";
- import { BrowserRouter, Routes, Route } from "react-router";
+ import {BrowserRouter, Routes, Route, redirect, Navigate} from "react-router";
  import {Quest} from "./Pages/Question";
  import {Scanner} from "./Pages/Scanner";
- import {Register} from "./Pages/Register";
- import {Login} from "./Pages/Login";
+ import {Maps} from "./Pages/Map";
  import {Leaderboard} from "./Pages/Leaderboard";
-import {CreateAssignment} from "./Pages/Assignments/CreateAssignment";
+import {Login} from "./Pages/Admin/Login";
+// import {Register} from "./Pages/Admin/Register";
+import {CreateAssignment} from "./Pages/Admin/Assignments/CreateAssignment";
+
+const user = null;
 
  const root = document.getElementById("root");
 
@@ -18,8 +21,12 @@ import {CreateAssignment} from "./Pages/Assignments/CreateAssignment";
    <BrowserRouter>
      <Routes>
        <Route path="/" element={<App />} />
-       <Route path="/login" element={<Login />} />
-       <Route path="/register" element={<Register />} />
+       <Route path="/map" element={<Maps />} />
+
+       <Route path="admin">
+        <Route path="login" element={<Login />} />
+       </Route>
+       {/*<Route path="/register" element={<Register />} />*/}
        <Route path="/assignments/create" element={<CreateAssignment />} />
        <Route path="/scan" element={<Scanner />} />
        <Route
