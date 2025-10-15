@@ -43,37 +43,33 @@ export const Quest = () => {
                 <div className="lg:col-span-2">
                     <h2 className="text-sm font-medium">Opties</h2>
                     <form className="bg-gray-700 rounded mt-4 shadow-lg">
-                        <div className="flex items-center px-8 py-5">
+                        <div className="cursor-pointer flex items-center px-8 py-5" onClick={() => setSelectedAwnser("A")}>
                             <input
                                 checked={selectedAwnser === "A"}
-                                onChange={() => setSelectedAwnser("A")}
                                 className={"cursor-pointer appearance-none w-4 h-4 rounded-full border-2 border-gray-700 ring-2 ring-orange-600 ring-opacity-100" + (selectedAwnser === "A" ? " bg-orange-500" : "")}
                                 type="radio"/>
-                            <label className="flex flex-row items-center text-sm font-medium ml-4"><span className={"font-bold text-lg px-2"}>A</span>Fatifatma</label>
+                            <label className="cursor-pointer flex flex-row items-center text-sm font-medium ml-4"><span className={"cursor-pointer font-bold text-lg px-2"}>A</span>Fatifatma</label>
                         </div>
-                        <div className="flex items-center px-8 py-5 border-t">
+                        <div className="cursor-pointer flex items-center px-8 py-5 border-t" onClick={() => setSelectedAwnser("B")}>
                             <input
                                 checked={selectedAwnser === "B"}
-                                onChange={() => setSelectedAwnser("B")}
                                 className={"cursor-pointer appearance-none w-4 h-4 rounded-full border-2 border-gray-700 ring-2 ring-orange-600 ring-opacity-100" + (selectedAwnser === "B" ? " bg-orange-500" : "")}
                                 type="radio"/>
-                            <label className="flex flex-row items-center text-sm font-medium ml-4"><span className={"font-bold text-lg px-2"}>B</span>Bom</label>
+                            <label className="cursor-pointer flex flex-row items-center text-sm font-medium ml-4"><span className={"cursor-pointer font-bold text-lg px-2"}>B</span>Bom</label>
                         </div>
-                        <div className="flex items-center px-8 py-5 border-t">
+                        <div className="cursor-pointer flex items-center px-8 py-5 border-t" onClick={() => setSelectedAwnser("C")}>
                             <input
                                 checked={selectedAwnser === "C"}
-                                onChange={() => setSelectedAwnser("C")}
                                 className={"cursor-pointer appearance-none w-4 h-4 rounded-full border-2 border-gray-700 ring-2 ring-orange-600 ring-opacity-100" + (selectedAwnser === "C" ? " bg-orange-500" : "")}
                                 type="radio"/>
-                            <label className="flex flex-row items-center text-sm font-medium ml-4"><span className={"font-bold text-lg px-2"}>C</span>Gunpowder</label>
+                            <label className="cursor-pointer flex flex-row items-center text-sm font-medium ml-4"><span className={"cursor-pointer font-bold text-lg px-2"}>C</span>Gunpowder</label>
                         </div>
-                        <div className="flex items-center px-8 py-5 border-t">
+                        <div className="cursor-pointer flex items-center px-8 py-5 border-t" onClick={() => setSelectedAwnser("D")}>
                             <input
                                 checked={selectedAwnser === "D"}
-                                onChange={() => setSelectedAwnser("D")}
                                 className={"cursor-pointer appearance-none w-4 h-4 rounded-full border-2 border-gray-700 ring-2 ring-orange-600 ring-opacity-100" + (selectedAwnser === "D" ? " bg-orange-500" : "")}
                                 type="radio"/>
-                            <label className="flex flex-row items-center text-sm font-medium ml-4"><span className={"font-bold text-lg px-2"}>D</span>Gebouw groen boem</label>
+                            <label className="cursor-pointer flex flex-row items-center text-sm font-medium ml-4"><span className={"cursor-pointer font-bold text-lg px-2"}>D</span>Geb. Groen Boem</label>
                         </div>
                     </form>
                 </div>
