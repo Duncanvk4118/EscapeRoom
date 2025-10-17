@@ -1,6 +1,5 @@
-import { MapPin, Search, User, Menu, X } from "lucide-react";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { MapPin, Search } from "lucide-react";
+import {Link} from "react-router";
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -18,16 +17,15 @@ export default function App() {
       <header className="w-full bg-white shadow-sm sticky top-0 z-50">
         <div className="max-w-6xl mx-auto flex justify-between items-center px-4 md:px-8 py-4">
           <div className="flex items-center space-x-2">
-            <User className="text-orange-600 w-6 h-6" />
             <h1 className="font-bold text-xl text-orange-600">Escape the Hell</h1>
           </div>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex space-x-6 font-medium text-gray-700">
-            <Link to="/" className="hover:text-orange-500 transition">Home</Link>
-            <Link to="#" className="hover:text-orange-500 transition">Thema’s</Link>
-            <Link to="#" className="hover:text-orange-500 transition">Boek nu</Link>
-            <Link to="/login" className="hover:text-orange-500 transition">Login</Link>
+          <nav className="hidden md:flex md:flex-row md:items-center md:justify-center space-x-6 font-medium text-gray-700 ">
+            <Link to="/map" className="hover:text-orange-500 transition">Map</Link>
+              <Link to="/scan" className="hover:text-orange-500 transition">Scannen</Link>
+            <Link to="/leaderboard" className="hover:text-orange-500 transition">Leaderboard</Link>
+
+            <Link to="/login" className="text-orange-500 outline outline-orange-500 hover:text-white hover:bg-orange-500 p-2 rounded-full transition">Login</Link>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -52,47 +50,7 @@ export default function App() {
         )}
       </header>
 
-      {/* HERO SECTION */}
-      <section
-        className="relative flex flex-col justify-center items-center text-center text-white px-6 py-24 md:py-40"
-        style={{
-          backgroundImage:
-            "url('https://www.actionworld.ch/wp-content/uploads/actionworld-escaperooms.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="absolute inset-0 bg-black/60"></div>
-        <div className="relative z-10 max-w-2xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-6 leading-tight">
-            Ontsnap uit de hel als je durft 🔥
-          </h2>
-          <p className="text-base md:text-lg text-gray-200 mb-10">
-            Werk samen, los raadsels op en vind de uitgang voordat de tijd om is.
-            Een unieke escaperoomervaring vol spanning en mysterie.
-          </p>
 
-          {/* ZOEKVELD */}
-          <form
-            onSubmit={handleSearch}
-            className="bg-white rounded-full flex items-center shadow-lg overflow-hidden max-w-md mx-auto w-full"
-          >
-            <input
-              type="text"
-              placeholder="Zoek op plaats of thema..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1 px-5 py-3 text-gray-800 focus:outline-none text-sm md:text-base"
-            />
-            <button
-              type="submit"
-              className="bg-orange-500 hover:bg-orange-400 p-3 md:p-4 rounded-full text-white transition"
-            >
-              <Search className="w-3 h-3 md:w-5 md:h-5" />
-            </button>
-          </form>
-        </div>
-      </section>
 
       {/* KAART + INFO */}
       <section className="w-full bg-gray-50 py-16 px-6 md:px-12">

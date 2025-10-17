@@ -1,25 +1,40 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Quest } from "./Pages/Question";
-import { Scanner } from "./Pages/Scanner";
-import { Register } from "./Pages/Register";
-import { Login } from "./Pages/Login";
-import { Leaderboard } from "./Pages/Leaderboard";
+import React, {useState} from "react";
+ import ReactDOM from "react-dom/client";
+ import "./index.css";
+ import App from "./App";
+ import {BrowserRouter, Routes, Route, redirect, Navigate} from "react-router";
+ import {Quest} from "./Pages/Question";
+ import {Scanner} from "./Pages/Scanner";
+ import {Maps} from "./Pages/Map";
+ import {Leaderboard} from "./Pages/Leaderboard";
+import {Login} from "./Pages/Admin/Login";
+// import {Register} from "./Pages/Admin/Register";
+import {CreateAssignment} from "./Pages/Admin/Assignments/CreateAssignment";
 
-const root = document.getElementById("root");
+const user = null;
 
-ReactDOM.createRoot(root).render(
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<App />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/create" element={<Register />} />
-      <Route path="/scan" element={<Scanner />} />
-      <Route path="/scan/:questId" element={<Quest />} />
-      <Route path="/leaderboard" element={<Leaderboard />} />
-    </Routes>
-  </BrowserRouter>
-);
+ const root = document.getElementById("root");
+
+ ReactDOM.createRoot(root).render(
+   <BrowserRouter>
+     <Routes>
+       <Route path="/" element={<App />} />
+       <Route path="/map" element={<Maps />} />
+
+       <Route path="admin">
+        <Route path="login" element={<Login />} />
+       </Route>
+       {/*<Route path="/register" element={<Register />} />*/}
+       <Route path="/assignments/create" element={<CreateAssignment />} />
+       <Route path="/scan" element={<Scanner />} />
+       <Route
+         path="/scan/:questId"
+         element={<Quest />}
+       />
+       <Route
+         path="/leaderboard"
+         element={<Leaderboard />}
+       />
+     </Routes>
+   </BrowserRouter>
+ );
