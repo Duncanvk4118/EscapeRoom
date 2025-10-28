@@ -7,34 +7,41 @@ import React, {useState} from "react";
  import {Scanner} from "./Pages/Scanner";
  import {Maps} from "./Pages/Map";
  import {Leaderboard} from "./Pages/Leaderboard";
-import {Login} from "./Pages/Admin/Login";
+import {LoginPage} from "./Pages/Admin/Login";
 // import {Register} from "./Pages/Admin/Register";
 import {CreateAssignment} from "./Pages/Admin/Assignments/CreateAssignment";
+import {LoginStudent} from "./Pages/Login";
+import {Dashboard} from "./Pages/Admin/Dashboard";
+import {AuthProvider} from "./Context/UserContext";
+import {TeamProvider} from "./Context/TeamContext";
 
-const user = null;
 
  const root = document.getElementById("root");
 
  ReactDOM.createRoot(root).render(
    <BrowserRouter>
-     <Routes>
-       <Route path="/" element={<App />} />
-       <Route path="/map" element={<Maps />} />
+       <AuthProvider>
+           <TeamProvider>
+             <Routes>
+               <Route path="/" element={<App />} />
+               <Route path="/map" element={<Maps />} />
+                 <Route path="/login" element={<LoginStudent />} />
 
-       <Route path="admin">
-        <Route path="login" element={<Login />} />
-       </Route>
-       {/*<Route path="/register" element={<Register />} />*/}
-       <Route path="/assignments/create" element={<CreateAssignment />} />
-       <Route path="/scan" element={<Scanner />} />
-       <Route
-         path="/scan/:questId"
-         element={<Quest />}
-       />
-       <Route
-         path="/leaderboard"
-         element={<Leaderboard />}
-       />
-     </Routes>
+               <Route path="admin" element={<Dashboard />} />
+                <Route path="admin/login" element={<LoginPage />} />
+               {/*<Route path="/register" element={<Register />} />*/}
+               <Route path="/assignments/create" element={<CreateAssignment />} />
+               <Route path="/scan" element={<Scanner />} />
+               <Route
+                 path="/scan/:questId"
+                 element={<Quest />}
+               />
+               <Route
+                 path="/leaderboard"
+                 element={<Leaderboard />}
+               />
+             </Routes>
+           </TeamProvider>
+       </AuthProvider>
    </BrowserRouter>
  );
