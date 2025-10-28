@@ -1,22 +1,33 @@
 import { MapPin, Search } from "lucide-react";
 import {Link} from "react-router";
+import logo from "./logo.png";
+
+import {useAuth} from "./Context/UserContext";
 
 export default function App() {
+    const {user, logout} = useAuth();
+
   return (
     <div className="min-h-screen flex flex-col bg-white text-gray-900 overflow-x-hidden">
       {/* HEADER */}
       <header className="w-full bg-white shadow-sm sticky top-0 z-50">
         <div className="max-w-6xl mx-auto flex justify-between items-center px-4 md:px-8 py-4">
           <div className="flex items-center space-x-2">
-            <h1 className="font-bold text-xl text-orange-600">Escape the Hell</h1>
+            {/*<h1 className="font-bold text-xl text-orange-600">Escape the Hell</h1>*/}
+              <img src={logo} alt="Logo" className="w-52 h-16"/>
           </div>
+
 
           <nav className="hidden md:flex md:flex-row md:items-center md:justify-center space-x-6 font-medium text-gray-700 ">
             <Link to="/map" className="hover:text-orange-500 transition">Map</Link>
               <Link to="/scan" className="hover:text-orange-500 transition">Scannen</Link>
             <Link to="/leaderboard" className="hover:text-orange-500 transition">Leaderboard</Link>
 
+              {!user ? (
             <Link to="/login" className="text-orange-500 outline outline-orange-500 hover:text-white hover:bg-orange-500 p-2 rounded-full transition">Login</Link>
+              ):
+                  <button className="text-orange-500 outline outline-orange-500 hover:text-white hover:bg-orange-500 p-2 rounded-full transition" onClick={() => {logout()}}>Uitloggen</button>
+              }
           </nav>
 
           <button className="md:hidden text-gray-700 hover:text-orange-500">

@@ -1,31 +1,37 @@
 import { Link } from "react-router";
 import {useState} from "react";
+import {useNavigate} from "react-router";
+import {useAuth} from "../../Context/UserContext";
 
-export const Login = () => {
-
+export const LoginPage = () => {
+    const navigate = useNavigate();
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
+    const {login} = useAuth();
 
-    const checkInputs = () => {};
-    const login = async ()  => {
-        const request = await fetch("http://localhost:8080/api/auth/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                email: "",
-                password: ""
+    const loginRequest = async ()  => {
+        try {
+            const request = await fetch("http://localhost:5001/api/admin/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                })
             })
-        });
-        const response = await request.json();
-        console.log(response);
-        if (response.status === 200) {
-            localStorage.setItem("token", response.token);
-            localStorage.setItem("user", JSON.stringify(response.user));
-            window.location.href = "/admin";
-        } else {
-            alert("Fout bij inloggen");
+            if (!request.ok) {
+                return Error("Error bij het inloggen");
+            }
+            const response = await request.json();
+            console.log(response)
+            login(response.token);
+
+            navigate("/admin")
+
+        } catch (e) {
+            console.log(e);
         }
     }
 
@@ -41,10 +47,13 @@ export const Login = () => {
                         {/*<Link to={"/register"} className={"text-orange-500"}>Registreer hier</Link>*/}
                     </div>
                 </div>
-                <form noValidate="" className="space-y-6">
+                <form noValidate="" className="space-y-6" onSubmit={(e) => {
+                    e.preventDefault();
+                    loginRequest();
+                }}>
                     <div>
                         <label htmlFor="email" className="text-sm text-gray-200">E-mail</label>
-                        <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="" className="w-full p-3 rounded bg-gray-200 hover:bg-white active:bg-white transition" />
+                        <input id="email" type={"email"} value={email} onChange={(e) => setEmail(e.target.value)} className="w-full p-3 rounded bg-gray-200 hover:bg-white active:bg-white transition" />
                     </div>
                     <div>
                         <label htmlFor="password" className="text-sm text-gray-200">Wachtwoord</label>

@@ -32,8 +32,10 @@ export const CreateAssignment = () => {
                         {action === "AR" ?
                         <div className={"flex flex-col w-full py-4"}>
                             <label htmlFor="image" className="text-sm text-gray-200">AR Object</label>
-                            <input type="file" id="image" className="w-full p-3 rounded bg-gray-200" required />
-                        </div> : action === "Multi" ? <div className={"flex flex-col w-full py-4"}>
+                            <input type="file" id="3d" className="w-full p-3 rounded bg-gray-200" required />
+                        </div>
+                            : action === "Multi" ?
+                                <div className={"flex flex-col w-full py-4"}>
                             <div className={"flex flex-col w-full pb-4"}>
                             <label htmlFor="image" className="text-md font-bold text-gray-200">Meerkeuze vraag</label>
                             <span className={"italic text-gray-200"}>Maximaal 4 antwoorden</span>

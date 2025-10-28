@@ -27,8 +27,8 @@ export const QRScanner = () => {
     }
 
     return (
-        <div>
-            <WebcamCapture onScan={handleScan} />
+        <div className={"flex border-8 border-dashed border-orange-500 rounded-lg"}>
+                <WebcamCapture onScan={handleScan} />
         </div>
     );
 }
