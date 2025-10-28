@@ -1,5 +1,6 @@
 import { MapPin, Search } from "lucide-react";
 import {Link} from "react-router";
+import { useState } from "react";
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -29,12 +30,12 @@ export default function App() {
           </nav>
 
           {/* Mobile Menu Button */}
-          <button
+          {/*<button
             className="md:hidden text-gray-700 hover:text-orange-500"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          </button>*/}
         </div>
 
         {/* Mobile Nav */}
