@@ -23,23 +23,24 @@ import {TeamProvider} from "./Context/TeamContext";
        <AuthProvider>
            <TeamProvider>
              <Routes>
-               <Route path="/" element={<App />} />
-               <Route path="/map" element={<Maps />} />
-                 <Route path="/login" element={<LoginStudent />} />
+                 <Route path="/" element={<App />} >
+                   <Route path="/map" element={<Maps />} />
+                     <Route path="/login" element={<LoginStudent />} />
 
-               <Route path="admin" element={<Dashboard />} />
-                <Route path="admin/login" element={<LoginPage />} />
-               {/*<Route path="/register" element={<Register />} />*/}
-               <Route path="/assignments/create" element={<CreateAssignment />} />
-               <Route path="/scan" element={<Scanner />} />
-               <Route
-                 path="/scan/:questId"
-                 element={<Quest />}
-               />
-               <Route
-                 path="/leaderboard"
-                 element={<Leaderboard />}
-               />
+                   <Route path="admin" element={<Dashboard />} />
+                    <Route path="admin/login" element={<LoginPage />} />
+                   {/*<Route path="/register" element={<Register />} />*/}
+                   <Route path="/assignments/create" element={<CreateAssignment />} />
+                   <Route path="/scan" element={<Scanner />} />
+                   <Route
+                     path="/scan/:questId"
+                     element={<Quest />}
+                   />
+                   <Route
+                     path="/leaderboard"
+                     element={<Leaderboard />}
+                   />
+                 </Route>
              </Routes>
            </TeamProvider>
        </AuthProvider>

@@ -67,10 +67,12 @@ export const LoginStudent = () => {
                         </div>
                         {teamFound && <span className={"text-emerald-500"}>Team gevonden!</span>}
                     </div>
+                    {teamFound && (
                     <div>
                         <label htmlFor="teamCode" className="text-sm text-gray-200">Gebruikers naam</label>
                         <input id="userName" type="text" value={userName} disabled={!teamFound} placeholder={(user && "U kunt niet deelnemen aan het spel.")} onChange={(e) => setUserName(e.target.value)} className={"w-full p-3 rounded bg-gray-100 disabled:bg-gray-300 hover:bg-white active:bg-white transition"} />
                     </div>
+                    )}
                     <button type="submit" disabled={!teamFound || !userName || (!teamFound && !userName)} className="w-full p-3 text-sm font-bold tracking-wide uppercase rounded  bg-orange-500 text-gray-50">Aansluiten</button>
                 </form>
             </div>
