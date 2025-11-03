@@ -40,7 +40,7 @@ export const Maps = () => {
     };
 
     return (
-            <MapContainer center={position} scrollWheelZoom={false} dragging={false} zoomControl={false} zoom={ZOOM_LEVEL} style={{ height: "100vh" }} whenCreated={(map) => {
+            <MapContainer center={position} scrollWheelZoom={false} dragging={true} zoomControl={false} zoom={ZOOM_LEVEL} style={{ height: "100vh" }} whenCreated={(map) => {
             map.on("click", addMarker);
         }}>
             <TileLayer url="https://api.maptiler.com/maps/landscape-v4/{z}/{x}/{y}.png?key=oTB2mxurTK1hJ0J9Ozpl" />

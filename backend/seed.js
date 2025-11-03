@@ -16,12 +16,12 @@ async function seed() {
   const teamName = 'Test Team';
   const teamToken = 'testteamtoken';
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(); // 1 week from now
-  if (!teams.findByToken(teamToken)) {
-    teams.create(teamName, teamToken, expiresAt);
-    console.log('Team created:', teamName, teamToken);
-  } else {
-    console.log('Team already exists:', teamName);
-  }
+  // if (!teams.findByToken(teamToken)) {
+  //   teams.create(teamName, teamToken, expiresAt, 0);
+  //   console.log('Team created:', teamName, teamToken);
+  // } else {
+  //   console.log('Team already exists:', teamName);
+  // }
 }
 
 seed();

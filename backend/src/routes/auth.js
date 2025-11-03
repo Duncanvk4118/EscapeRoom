@@ -50,7 +50,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    const token = generateToken({ id: user.ID, email: user.email });
+    const token = generateToken({ id: user.id, email: user.email });
 
     const expiresAt = getTokenExpiry(token);
     sessions.createUserSession(user.ID, token, expiresAt);
@@ -59,7 +59,7 @@ router.post('/login', async (req, res) => {
       message: 'Login successful',
       token,
       user: {
-        id: user.ID,
+        id: user.id,
         name: user.name,
         email: user.email
       }
