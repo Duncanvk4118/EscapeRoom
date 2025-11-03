@@ -3,7 +3,9 @@ const dotenv = require('dotenv');
 const { users } = require('./db/models');
 const { authMiddleware, teamAuthMiddleware } = require('./middleware/auth');
 const adminAuthRoutes = require('./routes/auth');
+const adminPanelRoutes = require('./routes/admin');
 const teamAuthRoutes = require('./routes/teamAuth');
+// (optional) team gameplay routes could be placed in ./routes/game and mounted at /api/team
 
 dotenv.config();
 
@@ -23,8 +25,13 @@ app.use(express.urlencoded({ extended: true }));
 // Test routes, /api/protected and /api/team/protected to test auth middleware and if login works
 // all routes are tested with postman :thumbs_up:
 
-app.use('/api/admin', adminAuthRoutes);
-app.use('/api/team', teamAuthRoutes);
+// Auth endpoints for admins
+app.use('/api/admin/auth', adminAuthRoutes);
+// Admin panel endpoints (CRUD, create-game, etc.)
+app.use('/api/admin', adminPanelRoutes);
+// Team auth endpoints (check-team, team login/logout)
+app.use('/api/team/auth', teamAuthRoutes);
+// TODO: mount team gameplay routes at /api/team when implemented
 
 app.get('/api/test', async (req, res) => {
   try {
