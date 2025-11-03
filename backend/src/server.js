@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const cors = require('cors')
 const { users } = require('./db/models');
 const { authMiddleware, teamAuthMiddleware } = require('./middleware/auth');
 const adminAuthRoutes = require('./routes/auth');
@@ -13,6 +14,10 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true
+}));
 
 // ROUTSE
 // Admin:
@@ -51,7 +56,7 @@ app.get('/api/team/protected', teamAuthMiddleware, (req, res) => {
   res.json({ message: 'You have accessed a protected team user route!', team_user: req.team_user });
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
