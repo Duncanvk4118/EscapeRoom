@@ -81,8 +81,8 @@ async function seed() {
            const token = crypto.randomBytes(2).toString('hex').toUpperCase();
            const name = `Team ${t + 1}`;
            // compute shift so teams start evenly spaced through the question list
-           const shift = Math.floor((t * Q) / Number(teams_count));
-           const resTeam = teams.create(name, token, null, erSessionId, shift);
+           const shift = Math.floor((t * Q) / Number(teamsCount));
+           const resTeam = teams.create(name, token, null, sessionId, shift);
            const teamId = resTeam.lastInsertRowid;
      
            // for each question index, add question to team with shifted
@@ -93,7 +93,7 @@ async function seed() {
              erSessionQuestions.create(teamId, questionId, null, 0, 0, 0, state);
            }
      
-           created.push({ id: teamId, name, token, shift });
+           createdTeams.push({ id: teamId, name, token, shift });
          }
       console.log('Created session with teams:', createdTeams);
     }

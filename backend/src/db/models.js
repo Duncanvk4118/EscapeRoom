@@ -73,7 +73,21 @@ const teamsModel = {
   },
 
   findBySessionId: (sessionId) => {
-    const stmt = db.prepare('SELECT * FROM teams WHERE er_game_id = ?');
+    // Return teams for a given er_game_session id along with aggregated stats:
+    // total_points: sum of points from er_session_questions
+    // total_questions: count of questions assigned to the team
+    // finished_questions: count of questions with state = 3 (finished)
+    const stmt = db.prepare(`
+      SELECT
+        t.*, 
+        COALESCE(SUM(esq.points), 0) AS total_points,
+        COUNT(esq.id) AS total_questions,
+        COALESCE(SUM(CASE WHEN esq.state = 3 THEN 1 ELSE 0 END), 0) AS finished_questions
+      FROM teams t
+      LEFT JOIN er_session_questions esq ON esq.team_id = t.id
+      WHERE t.er_game_id = ?
+      GROUP BY t.id
+    `);
     return stmt.all(sessionId);
   },
 
