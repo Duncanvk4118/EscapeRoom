@@ -46,6 +46,10 @@ const teamAuthMiddleware = (req, res, next) => {
 };
 
 const generateToken = (payload, expiresIn = '24h') => {
+  // If expiresIn is explicitly null, create a token without an exp claim (non-expiring)
+  if (expiresIn === null) {
+    return jwt.sign(payload, JWT_SECRET);
+  }
   return jwt.sign(payload, JWT_SECRET, { expiresIn });
 };
 

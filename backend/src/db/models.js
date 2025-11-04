@@ -310,6 +310,10 @@ const erQuestionsModel = {
     return stmt.all(erId);
   }
   ,
+  findById: (id) => {
+    const stmt = db.prepare('SELECT * FROM er_questions WHERE id = ?');
+    return stmt.get(id);
+  },
   findAll: () => {
     const stmt = db.prepare('SELECT * FROM er_questions');
     return stmt.all();
@@ -322,14 +326,15 @@ const erQuestionsModel = {
 };
 
 const erSessionQuestionsModel = {
-  create: (teamId, questionId, answer = null, correct = 0, hintsUsed = 0, points = 0) => {
-    const stmt = db.prepare('INSERT INTO er_session_questions (team_id, question_id, answer, correct, hints_used, points) VALUES (?, ?, ?, ?, ?, ?)');
-    return stmt.run(teamId, questionId, answer, correct, hintsUsed, points);
+  // state: 0 = unanswered, 1 = answering, 2 = scanned, 3 = finished
+  create: (teamId, questionId, answer = null, correct = 0, hintsUsed = 0, points = 0, state = 0) => {
+    const stmt = db.prepare('INSERT INTO er_session_questions (team_id, question_id, answer, correct, hints_used, points, state) VALUES (?, ?, ?, ?, ?, ?, ?)');
+    return stmt.run(teamId, questionId, answer, correct, hintsUsed, points, state);
   },
 
-  updateAnswer: (id, answer, correct, hintsUsed = null, points = null) => {
-    const stmt = db.prepare('UPDATE er_session_questions SET answer = ?, correct = ?, hints_used = COALESCE(?, hints_used), points = COALESCE(?, points) WHERE id = ?');
-    return stmt.run(answer, correct, hintsUsed, points, id);
+  updateAnswer: (id, answer, correct, hintsUsed = null, points = null, state = null) => {
+    const stmt = db.prepare('UPDATE er_session_questions SET answer = ?, correct = ?, hints_used = COALESCE(?, hints_used), points = COALESCE(?, points), state = COALESCE(?, state) WHERE id = ?');
+    return stmt.run(answer, correct, hintsUsed, points, state, id);
   },
 
   findByTeamId: (teamId) => {

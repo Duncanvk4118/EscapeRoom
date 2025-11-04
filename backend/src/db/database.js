@@ -123,6 +123,7 @@ const initDb = () => {
       correct BOOLEAN DEFAULT 0,
       hints_used INTEGER DEFAULT 0,
       points INTEGER DEFAULT 0,
+      state INTEGER DEFAULT 0,
       FOREIGN KEY (team_id) REFERENCES teams(id),
       FOREIGN KEY (question_id) REFERENCES questions(id)
     );
