@@ -24,7 +24,7 @@ BACKEND
 
     POST /api/admin/escape-room/:id/create-session
     body {teams: int}
-    backend: create amount of teams and return the team codes for the team players to use
+    backend: create amount of teams and return the team codes for the team players to use, also create the questions for each team
 
 # Team User Flow
 
@@ -38,3 +38,13 @@ BACKEND
     backend: return authentication jwt
 
 2. Ability to get leaderboard, questions, etc.
+
+    GET /api/game/get-question
+    RETURNS: Title and location description, use shift to get correct question, if there are 20 questions and 4 teams each team should have a shift of 5 in this case, first team will begin at question 1, second at question 5 third at question 10 etc.
+
+    works: check which question is lastly finished, check what is the next question, 
+
+
+    GET /api/game/question-from-qr/:jwt-token
+    RETURNS: Title, question description and choices, all question data.
+
