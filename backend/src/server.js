@@ -4,7 +4,10 @@ const cors = require('cors')
 const { users } = require('./db/models');
 const { authMiddleware, teamAuthMiddleware } = require('./middleware/auth');
 const adminAuthRoutes = require('./routes/auth');
+const adminPanelRoutes = require('./routes/admin');
 const teamAuthRoutes = require('./routes/teamAuth');
+const gameRoutes = require('./routes/game');
+// (optional) team gameplay routes could be placed in ./routes/game and mounted at /api/team
 
 dotenv.config();
 
@@ -28,8 +31,14 @@ app.use(cors({
 // Test routes, /api/protected and /api/team/protected to test auth middleware and if login works
 // all routes are tested with postman :thumbs_up:
 
-app.use('/api/admin', adminAuthRoutes);
-app.use('/api/team', teamAuthRoutes);
+// Auth endpoints for admins
+app.use('/api/admin/auth', adminAuthRoutes);
+// Admin panel endpoints (CRUD, create-game, etc.)
+app.use('/api/admin', adminPanelRoutes);
+// Team auth endpoints (check-team, team login/logout)
+app.use('/api/team/auth', teamAuthRoutes);
+// Game endpoints (public token-based access for questions)
+app.use('/api/game', gameRoutes);
 
 app.get('/api/test', async (req, res) => {
   try {
@@ -49,7 +58,7 @@ app.get('/api/team/protected', teamAuthMiddleware, (req, res) => {
   res.json({ message: 'You have accessed a protected team user route!', team_user: req.team_user });
 });
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

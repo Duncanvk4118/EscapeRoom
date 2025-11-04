@@ -10,6 +10,8 @@ const { generateToken, getTokenExpiry } = require('../middleware/auth');
 
 router.use(express.json());
 
+// POST /api/team/auth/check-team
+
 router.post('/check-team', (req, res) => {
   const { team_token } = req.body;
   if (!team_token) {
@@ -19,8 +21,10 @@ router.post('/check-team', (req, res) => {
   if (!team) {
     return res.status(404).json({ error: 'Team not found or token expired' });
   }
-  res.json({ message: 'Team token valid', teamId: team.ID, teamName: team.name });
+  res.json({ message: 'Team token valid', teamId: team.id, teamName: team.name });
 });
+
+// POST /api/team/auth/login
 
 router.post('/login', async (req, res) => {
   try {
@@ -32,9 +36,9 @@ router.post('/login', async (req, res) => {
     if (!team) {
       return res.status(401).json({ error: 'Invalid or expired team token' });
     }
-    const teamUserResult = teamUsers.create(team.ID, username);
+    const teamUserResult = teamUsers.create(team.id, username);
     const teamUserId = teamUserResult.lastInsertRowid;
-    const token = generateToken({ teamUserId, teamId: team.ID, username, team_token }, '24h');
+    const token = generateToken({ teamUserId, teamId: team.id, username, team_token }, '24h');
     const expiresAt = getTokenExpiry(token);
     sessions.createTeamUserSession(teamUserId, token, expiresAt);
     res.json({
@@ -43,13 +47,15 @@ router.post('/login', async (req, res) => {
       teamUser: {
         id: teamUserId,
         username,
-        teamId: team.ID
+        teamId: team.id
       }
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
+// POST /api/team/auth/logout
 
 router.post('/logout', (req, res) => {
   try {
