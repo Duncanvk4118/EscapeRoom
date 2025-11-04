@@ -7,6 +7,7 @@ import React, {useState} from "react";
  import {Scanner} from "./Pages/Scanner";
  import {Maps} from "./Pages/Map";
  import {Leaderboard} from "./Pages/Leaderboard";
+ import {Home} from "./Pages/HomePage";
 import {LoginPage} from "./Pages/Admin/Login";
 // import {Register} from "./Pages/Admin/Register";
 import {CreateAssignment} from "./Pages/Admin/Assignments/CreateAssignment";
