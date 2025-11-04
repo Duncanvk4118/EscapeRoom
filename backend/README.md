@@ -45,6 +45,11 @@ BACKEND
     works: check which question is lastly finished, check what is the next question, 
 
 
-    GET /api/game/question-from-qr/:jwt-token
-    RETURNS: Title, question description and choices, all question data.
+    GET /api/game/get-question/:jwt_token
+    RETURNS: All question data
+    BACKEND: changes state to scanned and now /get-question/ will also return all data.
 
+    POST /api/game/answer-question
+    body: {question_id, answer_id}
+    RETURNS: Valid / not valid
+    BACKEND: changes state to finished and /get-question/ will now return the new question
