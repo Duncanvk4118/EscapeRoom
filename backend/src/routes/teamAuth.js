@@ -10,6 +10,8 @@ const { generateToken, getTokenExpiry } = require('../middleware/auth');
 
 router.use(express.json());
 
+// POST /api/team/auth/check-team
+
 router.post('/check-team', (req, res) => {
   const { team_token } = req.body;
   if (!team_token) {
@@ -21,6 +23,8 @@ router.post('/check-team', (req, res) => {
   }
   res.json({ message: 'Team token valid', teamId: team.id, teamName: team.name });
 });
+
+// POST /api/team/auth/login
 
 router.post('/login', async (req, res) => {
   try {
@@ -50,6 +54,8 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// POST /api/team/auth/logout
 
 router.post('/logout', (req, res) => {
   try {
