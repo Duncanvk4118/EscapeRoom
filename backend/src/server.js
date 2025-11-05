@@ -58,7 +58,7 @@ app.get('/api/team/protected', teamAuthMiddleware, (req, res) => {
   res.json({ message: 'You have accessed a protected team user route!', team_user: req.team_user });
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

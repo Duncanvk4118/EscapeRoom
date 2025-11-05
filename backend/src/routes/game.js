@@ -7,7 +7,7 @@ const { JWT_SECRET, teamAuthMiddleware } = require('../middleware/auth');
 router.use(express.json());
 
 // GET /game/get-question/:jwt_token
-// Verifies the token and returns question + answers
+// Verifies the token mainand returns question + answers
 router.get('/get-question/:jwt_token', teamAuthMiddleware, (req, res) => {
   const token = req.params.jwt_token;
   try {

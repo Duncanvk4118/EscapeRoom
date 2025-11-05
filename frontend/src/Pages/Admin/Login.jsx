@@ -11,7 +11,7 @@ export const LoginPage = () => {
 
     const loginRequest = async ()  => {
         try {
-            const request = await fetch("http://localhost:5001/api/admin/login", {
+            const request = await fetch("http://localhost:5001/api/admin/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
