@@ -60,7 +60,7 @@ router.get('/get-question', teamAuthMiddleware, (req, res) => {
       let scanned = sessionRows.find((r) => r.state === 2);
       if (scanned) {
         // set to in-progress
-        erSessionQuestions.updateAnswer(scanned.id, null, 0, null, null, 1);
+        erSessionQuestions.updateAnswer(scanned.id, null, 0, null, null, 2);
         const q = questions.findById(scanned.question_id);
         const ans = answers.getByQuestionId(scanned.question_id) || [];
         const refreshed = erSessionQuestions.findById(scanned.id);
@@ -98,7 +98,7 @@ router.post('/answer-question', teamAuthMiddleware, (req, res) => {
     const erRow = erSessionQuestions.findById(Number(er_session_question_id));
     if (!erRow) return res.status(404).json({ error: 'er session question not found' });
     if (Number(erRow.team_id) !== Number(teamId)) return res.status(403).json({ error: 'This question does not belong to your team' });
-    if (erRow.state !== 1) return res.status(400).json({ error: 'Question is not in progress' });
+    if (erRow.state !== 1 && erRow.state !== 2) return res.status(400).json({ error: 'Question is not in progress' });
 
     const answerRow = answers.findById(Number(answer_id));
     if (!answerRow) return res.status(404).json({ error: 'Answer not found' });
