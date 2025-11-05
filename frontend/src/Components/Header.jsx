@@ -2,7 +2,7 @@ import logo from "../logo.png";
 import {Link} from "react-router";
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { AiOutlineClose } from 'react-icons/ai';
-import { MdOutlineCamera, MdOutlineClose } from 'react-icons/md';
+import {MdOutlineCamera, MdOutlineClose, MdOutlineHouse} from 'react-icons/md';
 import { HiOutlineUserGroup } from 'react-icons/hi';
 import { BsPerson } from 'react-icons/bs';
 import { PiCrown } from 'react-icons/pi';
@@ -65,13 +65,19 @@ export const Header = () => {
 
         </header>
         <header className={"block md:hidden w-full bg-gray-800 shadow-sm fixed bottom-0 z-50"}>
+            {user ? (
             <div className={"w-full flex flex-row items-center justify-between px-4 py-4 text-gray-100 text-xl"}>
                 <Link to={"/scan"}><MdOutlineCamera /></Link>
                 <Link to={"/leaderboard"}><PiCrown /></Link>
-                <Link to={"/"} className={"bg-gray-100 p-2 mb-4 rounded-full text-gray-700"}><MdOutlineClose /></Link>
+                <Link to={"/"} className={"bg-gray-100 p-2 mb-4 rounded-full text-gray-700"}><MdOutlineHouse /></Link>
                 <Link to={"/team"}><HiOutlineUserGroup /></Link>
-                <Link to={"/me"}><BsPerson /></Link>
+                <button onClick={() => logout()}><BsPerson /></button>
             </div>
+            ) : (
+                <div className={"w-full flex flex-row items-center justify-around px-4 py-4 text-gray-100 text-xl"}>
+                <Link to={"/"}><MdOutlineHouse /></Link>
+                    <Link to={"/login"}><BsPerson /></Link>
+            </div>)}
         </header>
         </>
     )
