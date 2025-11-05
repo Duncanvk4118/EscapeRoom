@@ -11,7 +11,7 @@ export const LoginPage = () => {
 
     const loginRequest = async ()  => {
         try {
-            const request = await fetch("http://localhost:5001/api/admin/auth/login", {
+            const request = await fetch("http://localhost:5000/api/admin/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -53,11 +53,11 @@ export const LoginPage = () => {
                 }}>
                     <div>
                         <label htmlFor="email" className="text-sm text-gray-200">E-mail</label>
-                        <input id="email" type={"email"} value={email} onChange={(e) => setEmail(e.target.value)} className="w-full p-3 rounded bg-gray-200 hover:bg-white active:bg-white transition" />
+                        <input id="email" type={"email"} value={email} onChange={(e) => setEmail(e.target.value)} className="w-full p-3 rounded bg-gray-900 text-gray-100 transition" />
                     </div>
                     <div>
                         <label htmlFor="password" className="text-sm text-gray-200">Wachtwoord</label>
-                        <input id="password" type={"password"} value={password} onChange={(e) => setPassword(e.target.value)} className="resize-none w-full p-3 rounded bg-gray-200 hover:bg-white active:bg-white transition" />
+                        <input id="password" type={"password"} value={password} onChange={(e) => setPassword(e.target.value)} className="resize-none w-full p-3 rounded bg-gray-900 text-gray-100 transition" />
                     </div>
                     <button type="submit" className="w-full p-3 text-sm font-bold tracking-wide uppercase rounded  bg-orange-500 text-gray-50">Login</button>
                 </form>
