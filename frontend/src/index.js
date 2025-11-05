@@ -28,13 +28,17 @@ import {TeamProvider} from "./Context/TeamContext";
                      <Route path="/login" element={<LoginStudent />} />
 
                    <Route path="admin" element={<Dashboard />} />
-                    <Route path="admin/login" element={<LoginPage />} />
+                      <Route path="admin/login" element={<LoginPage />} />
                    {/*<Route path="/register" element={<Register />} />*/}
                    <Route path="/assignments/create" element={<CreateAssignment />} />
                    <Route path="/scan" element={<Scanner />} />
                    <Route
                      path="/quest"
-                     element={<Quest />}
+                     element={<Quest token={null} />}
+                   />
+                     <Route
+                     path="/quest/:token"
+                     element={<Quest token={":token"} />}
                    />
                    <Route
                      path="/leaderboard"
