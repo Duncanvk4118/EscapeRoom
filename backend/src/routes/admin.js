@@ -177,6 +177,27 @@ router.post('/escape-rooms/:escapeRoomId/create-session', authMiddleware, (req, 
   }
 });
 
+// List all er game sessions
+router.get('/er-game-sessions', authMiddleware, (req, res) => {
+  try {
+    const sessions = erSessions.findAll();
+    res.json(sessions);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Get single er game session
+router.get('/er-game-sessions/:id', authMiddleware, (req, res) => {
+  try {
+    const s = erSessions.findById(Number(req.params.id));
+    if (!s) return res.status(404).json({ error: 'Session not found' });
+    res.json(s);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 
 // --- Users CRUD ---
 router.get('/users', authMiddleware, (req, res) => {
@@ -214,6 +235,17 @@ router.get('/teams/:id', authMiddleware, (req, res) => {
   const t = teams.findById(Number(req.params.id));
   if (!t) return res.status(404).json({ error: 'Team not found' });
   res.json(t);
+});
+// Get all teams for a specific er game session
+router.get('/teams/session/:erSessionId', authMiddleware, (req, res) => {
+  try {
+    const erSessionId = Number(req.params.erSessionId);
+    if (Number.isNaN(erSessionId)) return res.status(400).json({ error: 'Invalid session id' });
+    const list = teams.findBySessionId(erSessionId) || [];
+    return res.json(list);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
 });
 router.patch('/teams/:id', authMiddleware, (req, res) => res.json(teams.update(Number(req.params.id), req.body)));
 router.delete('/teams/:id', authMiddleware, (req, res) => res.json(teams.delete(Number(req.params.id))));
@@ -292,8 +324,22 @@ router.get('/er-session-questions/team/:teamId', authMiddleware, (req, res) => {
 });
 
 router.patch('/er-session-questions/:id', authMiddleware, (req, res) => {
-  const { answer, correct, hints_used, points } = req.body;
-  res.json(erSessionQuestions.updateAnswer(Number(req.params.id), answer, correct ? 1 : 0, hints_used, points));
+  try {
+    const id = Number(req.params.id);
+    const { answer, correct, hints_used, points, state } = req.body;
+    // avoid clearing the existing answer when frontend doesn't send it
+    const existing = erSessionQuestions.findById(id);
+    if (!existing) return res.status(404).json({ error: 'er_session_question not found' });
+    const newAnswer = typeof answer !== 'undefined' ? answer : existing.answer;
+    const newCorrect = typeof correct !== 'undefined' ? (correct ? 1 : 0) : existing.correct;
+    const newHints = typeof hints_used !== 'undefined' ? hints_used : existing.hints_used;
+    const newPoints = typeof points !== 'undefined' ? points : existing.points;
+    const newState = typeof state !== 'undefined' ? state : existing.state;
+    const r = erSessionQuestions.updateAnswer(id, newAnswer, newCorrect, newHints, newPoints, newState);
+    return res.json(r);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
 });
 router.delete('/er-session-questions/:id', authMiddleware, (req, res) => res.json(erSessionQuestions.delete(Number(req.params.id))));
 
