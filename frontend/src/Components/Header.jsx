@@ -8,6 +8,7 @@ import { BsPerson } from 'react-icons/bs';
 import { PiCrown } from 'react-icons/pi';
 import {useAuth} from "../Context/UserContext";
 import {useState} from "react";
+import {BiQuestionMark} from "react-icons/bi";
 
 export const Header = () => {
     const {user, logout} = useAuth();
@@ -68,9 +69,9 @@ export const Header = () => {
             {user ? (
             <div className={"w-full flex flex-row items-center justify-between px-4 py-4 text-gray-100 text-xl"}>
                 <Link to={"/scan"}><MdOutlineCamera /></Link>
-                <Link to={"/leaderboard"}><PiCrown /></Link>
+                <Link to={"/quest"}><BiQuestionMark /></Link>
                 <Link to={"/"} className={"bg-gray-100 p-2 mb-4 rounded-full text-gray-700"}><MdOutlineHouse /></Link>
-                <Link to={"/team"}><HiOutlineUserGroup /></Link>
+                <Link to={"/leaderboard"}><PiCrown /></Link>
                 <button onClick={() => logout()}><BsPerson /></button>
             </div>
             ) : (
