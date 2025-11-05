@@ -1,9 +1,32 @@
 import {useEffect, useState} from "react";
-import {useParams} from "react-router";
 import { FaRegLightbulb } from 'react-icons/fa';
 
 export const Quest = () => {
-    const quest = useParams();
+    const [quest, setQuest] = useState(null);
+
+    useEffect(() => {
+        const receiveQuest = async () => {
+            try {
+                const request = await fetch("http://localhost:5001/api/game/get-question", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + localStorage.getItem("token"),
+                    },
+                })
+                if (!request.ok) {
+                    return Error("Error bij het ophalen van de vraag");
+                }
+                const response = await request.json();
+                console.log(response)
+                setQuest(response);
+                return response;
+            } catch (e) {
+                return Error("Error bij het ophalen van de vraag");
+            }
+        }
+        receiveQuest();
+    }, [])
 
     const [selectedAwnser, setSelectedAwnser] = useState(null);
 
@@ -15,17 +38,21 @@ export const Quest = () => {
                         <div className="px-8">
                             <div className="flex items-end">
                                 <span className="text-gray-300 text-sm font-thin focus:outline-none -ml-1">
-                                    Vraag {quest.questId}
+                                    Vraag {quest?.question_id}
                                 </span>
                             </div>
                             <img src="https://static.vecteezy.com/system/resources/thumbnails/009/383/627/small_2x/bicycle-clipart-design-illustration-free-png.png" alt="Vraag Img" className={"h-56 w-56 p-2"} />
-                            <div className="flex items-end">
+                            <div className="flex flex-col items-end">
                             <span className="text-lg font-medium focus:outline-none -ml-1">
-                                    {"Wie is het snelste?"}
+                                    {quest?.title}
                                 </span>
+                                <span>{quest?.description}</span>
                             </div>
+                            {quest?.answers && (
                             <span className="text-xs text-gray-300 mt-2">Nog {"2"} hints over.</span>
+                            )}
                         </div>
+                        {quest?.answers && (
                         <div className="grid grid-flow-col grid-cols-5 px-8 pt-4 gap-2">
                             <button
                                 className="flex col-span-1 items-center justify-center disabled:bg-amber-300 bg-amber-500 text-xl font-medium w-full h-15 rounded text-blue-50 hover:bg-amber-700 active:bg-amber-800 transition">
@@ -37,9 +64,11 @@ export const Quest = () => {
                                 Controleren
                             </button>
                         </div>
-                        {!selectedAwnser && <div className={"flex justify-center items-center"}><span className={"text-red-500 text-sm"}>{"Er is nog geen antwoord gegeven."}</span></div>}
+                        )}
+                        {!selectedAwnser && quest?.answers && <div className={"flex justify-center items-center"}><span className={"text-red-500 text-sm"}>{"Er is nog geen antwoord gegeven."}</span></div>}
                     </div>
                 </div>
+                {quest?.answers && (
                 <div className="lg:col-span-2">
                     <h2 className="text-sm font-medium">Opties</h2>
                     <form className="bg-gray-700 rounded mt-4 shadow-lg">
@@ -73,6 +102,7 @@ export const Quest = () => {
                         </div>
                     </form>
                 </div>
+                )}
 
             </div>
         </div>

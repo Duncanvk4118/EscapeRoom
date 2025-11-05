@@ -2,6 +2,10 @@ import logo from "../logo.png";
 import {Link} from "react-router";
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { AiOutlineClose } from 'react-icons/ai';
+import {MdOutlineCamera, MdOutlineClose, MdOutlineHouse} from 'react-icons/md';
+import { HiOutlineUserGroup } from 'react-icons/hi';
+import { BsPerson } from 'react-icons/bs';
+import { PiCrown } from 'react-icons/pi';
 import {useAuth} from "../Context/UserContext";
 import {useState} from "react";
 
@@ -9,7 +13,8 @@ export const Header = () => {
     const {user, logout} = useAuth();
     const [menuOpen, setMenuOpen] = useState(false);
     return (
-        <header className="w-full bg-gray-800 shadow-sm sticky top-0 z-50">
+        <>
+        <header className="hidden md:block w-full bg-gray-800 shadow-sm sticky top-0 z-50">
             <div className="max-w-6xl mx-auto flex justify-between items-center px-4 md:px-8 py-4">
                 <Link to={"/"} className="flex items-center space-x-2">
                     {/*<h1 className="font-bold text-xl text-orange-600">Escape the Hell</h1>*/}
@@ -59,5 +64,21 @@ export const Header = () => {
         </nav>
 
         </header>
+        <header className={"block md:hidden w-full bg-gray-800 shadow-sm fixed bottom-0 z-50"}>
+            {user ? (
+            <div className={"w-full flex flex-row items-center justify-between px-4 py-4 text-gray-100 text-xl"}>
+                <Link to={"/scan"}><MdOutlineCamera /></Link>
+                <Link to={"/leaderboard"}><PiCrown /></Link>
+                <Link to={"/"} className={"bg-gray-100 p-2 mb-4 rounded-full text-gray-700"}><MdOutlineHouse /></Link>
+                <Link to={"/team"}><HiOutlineUserGroup /></Link>
+                <button onClick={() => logout()}><BsPerson /></button>
+            </div>
+            ) : (
+                <div className={"w-full flex flex-row items-center justify-around px-4 py-4 text-gray-100 text-xl"}>
+                <Link to={"/"}><MdOutlineHouse /></Link>
+                    <Link to={"/login"}><BsPerson /></Link>
+            </div>)}
+        </header>
+        </>
     )
 }

@@ -92,8 +92,8 @@ async function seed() {
              const state = qi === 0 ? 1 : 0;
              erSessionQuestions.create(teamId, questionId, null, 0, 0, 0, state);
            }
-     
-           createdTeams.push({ id: teamId, name, token, shift });
+
+          createdTeams.push({ id: teamId, name, token, shift });
          }
       console.log('Created session with teams:', createdTeams);
     }
