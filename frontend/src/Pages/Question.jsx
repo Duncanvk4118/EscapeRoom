@@ -1,13 +1,15 @@
 import {useEffect, useState} from "react";
+import {useParams} from "react-router";
 import { FaRegLightbulb } from 'react-icons/fa';
 
 export const Quest = () => {
     const [quest, setQuest] = useState(null);
+    const {id} = useParams();
 
     useEffect(() => {
         const receiveQuest = async () => {
             try {
-                const request = await fetch("http://localhost:5001/api/game/get-question", {
+                const request = await fetch(id !== null ?"http://localhost:5001/api/game/get-question" : "http://localhost:5001/api/game/get-question" + id, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

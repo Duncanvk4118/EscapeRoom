@@ -34,7 +34,8 @@ import {TeamProvider} from "./Context/TeamContext";
                  <Route path="/" element={<App />} >
                    <Route path="/map" element={<Maps />} />
                      <Route path="/login" element={<LoginStudent />} />
-
+                        <Route path="admin" element={<Dashboard />} />
+                      <Route path="admin/login" element={<LoginPage />} />
                    <Route path="admin" element={<RequireAdmin><Dashboard /></RequireAdmin>} />
                     <Route path="admin/login" element={<LoginPage />} />
                    <Route path="admin/escape-rooms" element={<RequireAdmin><EscapeRoomsList /></RequireAdmin>} />
@@ -50,7 +51,11 @@ import {TeamProvider} from "./Context/TeamContext";
                    <Route path="/scan" element={<Scanner />} />
                    <Route
                      path="/quest"
-                     element={<Quest />}
+                     element={<Quest token={null} />}
+                   />
+                     <Route
+                     path="/quest/:token"
+                     element={<Quest token={":token"} />}
                    />
                    <Route
                      path="/leaderboard"
