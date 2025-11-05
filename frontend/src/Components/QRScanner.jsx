@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {WebcamCapture} from "./Webcam";
 import jsQR from 'jsqr';
+// import {CameraCapture} from "./Camera";
 
 
 export const QRScanner = () => {
@@ -26,9 +27,13 @@ export const QRScanner = () => {
         }
     }
 
-    return (
-        <div>
-            <WebcamCapture onScan={handleScan} />
+    return (<>
+        <div className={"flex border-8 border-dashed border-orange-500 rounded-lg"}>
+                <WebcamCapture onScan={handleScan} />
         </div>
+        {/*<div className={"block md:hidden sm:flex border-8 border-dashed border-orange-500 rounded-lg"}>*/}
+        {/*        <CameraCapture onScan={handleScan} />*/}
+        {/*</div>*/}
+        </>
     );
 }

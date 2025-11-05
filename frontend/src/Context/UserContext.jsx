@@ -6,7 +6,6 @@ import React, {
     useMemo,
 } from "react";
 import { jwtDecode } from "jwt-decode";
-import Cookies from "js-cookie";
 
 const AuthContext = createContext();
 
@@ -15,119 +14,30 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
-    const [usedRememberMe, setUsedRememberMe] = useState(false);
     const [isTokenValid, setIsTokenValid] = useState(false);
-    const [token, setToken] = useState(() => Cookies.get("token") || null);
-    const [refreshToken, setRefreshToken] = useState(
-        () => Cookies.get("refreshToken") || null
-    );
+    const [token, setToken] = useState(() => localStorage.getItem("token") || null);
+
+
     const [user, setUser] = useState(() => {
-        const storedToken = Cookies.get("token");
-        return storedToken ? jwtDecode(storedToken) : null;
-    });
-    const [mainUser, setMainUser] = useState(() => {
-        const storedToken = Cookies.get("token");
+        const storedToken = localStorage.getItem("token")
         return storedToken ? jwtDecode(storedToken) : null;
     });
 
-    const login = (jwtToken, jwtRefreshToken) => {
+    const login = (jwtToken) => {
         setToken(jwtToken);
-        setRefreshToken(jwtRefreshToken);
         setUser(jwtDecode(jwtToken));
-        Cookies.set("token", jwtToken, { expires: 1 / 24 });
-        usedRememberMe
-            ? Cookies.set("refreshToken", jwtRefreshToken, { expires: 7 })
-            : Cookies.set("refreshToken", jwtRefreshToken, { expires: 1 });
-    };
-
-    const updateToken = async (newToken) => {
-        setToken(newToken);
-        setUser(jwtDecode(newToken));
-        Cookies.set("token", newToken, { expires: 1 / 24 });
+        localStorage.setItem("token", jwtToken);
     };
 
     const logout = () => {
         setToken(null);
         setUser(null);
-        setRefreshToken(null);
-        Cookies.remove("token");
-        Cookies.remove("refreshToken");
-    };
-
-    const forceRefreshAccessToken = async () => {
-        if (!refreshToken) return;
-
-        try {
-            const response = await fetch(backend + "/user/token/refresh", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${refreshToken}`,
-                },
-                body: JSON.stringify({ refreshToken }),
-            });
-
-            if (!response.ok) {
-                throw new Error(`Token refresh failed: ${response.status}`);
-            }
-
-            const { token: newToken } = await response.json();
-            updateToken(newToken);
-        } catch (error) {
-            console.error("Error refreshing token:", error);
-        }
-    };
-    const forceRefreshAccessTokenReload = async () => {
-        if (!refreshToken) return;
-
-        try {
-            const response = await fetch(backend + "/user/token/refresh", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${refreshToken}`,
-                },
-                body: JSON.stringify({ refreshToken }),
-            });
-
-            if (!response.ok) {
-                throw new Error(`Token refresh failed: ${response.status}`);
-            }
-
-            const { token: newToken } = await response.json();
-            await updateToken(newToken);
-            window.location.reload();
-        } catch (error) {
-            console.error("Error refreshing token:", error);
-        }
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        window.location.href = "/";
     };
 
     useEffect(() => {
-        const refreshAccessToken = async () => {
-            if (!refreshToken) return;
-
-            try {
-                const response = await fetch(backend + "/user/token/refresh", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${refreshToken}`,
-                    },
-                    body: JSON.stringify({ refreshToken }),
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Token refresh failed: ${response.status}`);
-                }
-
-                const { token: newToken } = await response.json();
-                updateToken(newToken);
-            } catch (error) {
-                console.error("Error refreshing token:", error);
-                logout();
-            }
-        };
-
         const verifyToken = (token) => {
             try {
                 const decodedToken = jwtDecode(token);
@@ -137,10 +47,6 @@ export function AuthProvider({ children }) {
                     console.error("Token is expired, logging out!");
                     logout();
                     return false;
-                }
-
-                if (decodedToken.exp - currentTime < 360) {
-                    refreshAccessToken();
                 }
 
                 return true;
@@ -167,7 +73,7 @@ export function AuthProvider({ children }) {
         }, 1 * 60 * 1000);
 
         return () => clearInterval(intervalId);
-    }, [token, refreshToken]);
+    }, [token]);
 
     // Volg veranderingen in `user` en log uit als token niet klopt
     useEffect(() => {
@@ -186,21 +92,13 @@ export function AuthProvider({ children }) {
     const value = useMemo(
         () => ({
             user,
-            mainUser,
             token,
-            refreshToken,
             isTokenValid,
             login,
             logout,
-            updateToken,
-            forceRefreshAccessToken,
-            forceRefreshAccessTokenReload,
-            setUsedRememberMe,
             setToken,
-            setRefreshToken,
-            usedRememberMe,
         }),
-        [user, token, refreshToken, isTokenValid, usedRememberMe]
+        [user, token, isTokenValid]
     );
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -46,6 +46,9 @@ const teamAuthMiddleware = (req, res, next) => {
 };
 
 const generateToken = (payload, expiresIn = '24h') => {
+  if (expiresIn === null) {
+    return jwt.sign(payload, JWT_SECRET);
+  }
   return jwt.sign(payload, JWT_SECRET, { expiresIn });
 };
 
