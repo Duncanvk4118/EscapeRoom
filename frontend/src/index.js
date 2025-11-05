@@ -33,7 +33,7 @@ import {TeamProvider} from "./Context/TeamContext";
                    <Route path="/assignments/create" element={<CreateAssignment />} />
                    <Route path="/scan" element={<Scanner />} />
                    <Route
-                     path="/scan/:questId"
+                     path="/quest"
                      element={<Quest />}
                    />
                    <Route

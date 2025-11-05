@@ -68,10 +68,6 @@ export const Leaderboard = () => {
                         ))}
                     </div>
                 </div>
-
-                <div className="mt-8 text-center text-sm text-gray-500">
-                    <p>Last updated: {new Date().toLocaleDateString()}</p>
-                </div>
             </div>
         </div>
     );
