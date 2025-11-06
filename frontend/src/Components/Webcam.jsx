@@ -1,15 +1,24 @@
 import React, { useEffect, useRef } from "react";
 import Webcam from "react-webcam";
 
-export const WebcamCapture = ({ onScan }) => {
+export const WebcamCapture = ({ onScan, active = true }) => {
     const webcamRef = useRef(null);
+    const timerRef = useRef(null);
 
     useEffect(() => {
-        const timer = setInterval(() => {
-            capture();
-        }, 500);
-        return () => clearInterval(timer);
-    }, []);
+        // start or stop interval depending on `active`
+        if (active) {
+            timerRef.current = setInterval(() => {
+                capture();
+            }, 500);
+        }
+        return () => {
+            if (timerRef.current) {
+                clearInterval(timerRef.current);
+                timerRef.current = null;
+            }
+        };
+    }, [active]);
 
     const videoConstraints = {
         width: 500,
@@ -18,6 +27,7 @@ export const WebcamCapture = ({ onScan }) => {
     };
 
     const capture = () => {
+        if (!webcamRef.current) return;
         const imageSrc = webcamRef.current.getScreenshot();
         onScan(imageSrc);
     }

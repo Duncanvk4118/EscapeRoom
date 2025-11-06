@@ -38,7 +38,7 @@ export const LoginStudent = () => {
 
     const checkTeam = async () => {
         try {
-            const request = await fetch("http://localhost:5001/api/team/auth/check-team", {
+            const request = await fetch("http://localhost:5000/api/team/auth/check-team", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -66,7 +66,7 @@ export const LoginStudent = () => {
 
     const login = async () => {
         try {
-            const request = await fetch("http://localhost:5001/api/team/auth/login", {
+            const request = await fetch("http://localhost:5000/api/team/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

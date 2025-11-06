@@ -17,7 +17,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
     origin: "http://localhost:3000",
-    credentials: true
+    credentials: true,
+    origin: true,
 }));
 
 // ROUTSE
@@ -58,8 +59,8 @@ app.get('/api/team/protected', teamAuthMiddleware, (req, res) => {
   res.json({ message: 'You have accessed a protected team user route!', team_user: req.team_user });
 });
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on port ${PORT}`);
 });

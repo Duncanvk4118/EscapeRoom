@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {useParams} from "react-router";
 import { FaRegLightbulb } from 'react-icons/fa';
+import api from '../utils/api';
 
 export const Quest = () => {
     const [quest, setQuest] = useState(null);
@@ -9,28 +10,60 @@ export const Quest = () => {
     useEffect(() => {
         const receiveQuest = async () => {
             try {
-                const request = await fetch(id !== null ?"http://localhost:5001/api/game/get-question" : "http://localhost:5001/api/game/get-question" + id, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": "Bearer " + localStorage.getItem("token"),
-                    },
-                })
-                if (!request.ok) {
-                    return Error("Error bij het ophalen van de vraag");
+                let response;
+                if (id) {
+                    response = await api(`/game/get-question/${encodeURIComponent(id)}`);
+                } else {
+                    response = await api('/game/get-question');
                 }
-                const response = await request.json();
-                console.log(response)
+                console.log(response);
                 setQuest(response);
                 return response;
             } catch (e) {
-                return Error("Error bij het ophalen van de vraag");
+                console.error('Error fetching question:', e);
+                return e;
             }
         }
         receiveQuest();
-    }, [])
+    }, [id])
 
     const [selectedAwnser, setSelectedAwnser] = useState(null);
+    const [answerResult, setAnswerResult] = useState(null);
+
+    const handleSubmitAnswer = async () => {
+        if (!selectedAwnser || !quest?.er_question_id) return;
+        try {
+            const resp = await api('/game/answer-question', {
+                method: 'POST',
+                body: JSON.stringify({ er_session_question_id: quest.er_question_id, answer_id: selectedAwnser })
+            });
+            setAnswerResult(resp);
+            console.log('Answer response', resp);
+            // After receiving answer result (correct or not), fetch the next question preview
+            try {
+                const next = await api('/game/get-question');
+                console.log('Next question', next);
+                setQuest(next);
+                setSelectedAwnser(null);
+                setAnswerResult(null);
+            } catch (err) {
+                // api throws on non-OK status; backend uses 204 when no more questions
+                console.warn('Error fetching next question', err);
+                if (err && err.status === 204) {
+                    // No more questions
+                    setQuest(null);
+                    setAnswerResult({ info: err.body?.message || 'No more questions' });
+                    setSelectedAwnser(null);
+                } else {
+                    // other errors, keep the answerResult visible and log
+                    setAnswerResult({ error: err.message || 'Error fetching next question' });
+                }
+            }
+        } catch (e) {
+            console.error('Error submitting answer', e);
+            setAnswerResult({ error: e.message || 'Unknown error' });
+        }
+    }
 
     return (
         <div className={"flex flex-col gap-4 items-center justify-center w-full min-h-[100vh]"}>
@@ -61,6 +94,7 @@ export const Quest = () => {
                                 <FaRegLightbulb />
                             </button>
                             <button
+                                onClick={handleSubmitAnswer}
                                 disabled={!selectedAwnser}
                                 className="flex col-span-4 items-center justify-center disabled:bg-orange-300 bg-orange-500 text-sm font-medium w-full h-10 rounded text-blue-50 hover:bg-orange-700 active:bg-orange-800 transition">
                                 Controleren
@@ -74,36 +108,28 @@ export const Quest = () => {
                 <div className="lg:col-span-2">
                     <h2 className="text-sm font-medium">Opties</h2>
                     <form className="bg-gray-700 rounded mt-4 shadow-lg">
-                        <div className="cursor-pointer flex items-center px-8 py-5" onClick={() => setSelectedAwnser("A")}>
-                            <input
-                                checked={selectedAwnser === "A"}
-                                className={"cursor-pointer appearance-none w-4 h-4 rounded-full border-2 border-gray-700 ring-2 ring-orange-600 ring-opacity-100" + (selectedAwnser === "A" ? " bg-orange-500" : "")}
-                                type="radio"/>
-                            <label className="cursor-pointer flex flex-row items-center text-sm font-medium ml-4"><span className={"cursor-pointer font-bold text-lg px-2"}>A</span>Fiets</label>
-                        </div>
-                        <div className="cursor-pointer flex items-center px-8 py-5 border-t" onClick={() => setSelectedAwnser("B")}>
-                            <input
-                                checked={selectedAwnser === "B"}
-                                className={"cursor-pointer appearance-none w-4 h-4 rounded-full border-2 border-gray-700 ring-2 ring-orange-600 ring-opacity-100" + (selectedAwnser === "B" ? " bg-orange-500" : "")}
-                                type="radio"/>
-                            <label className="cursor-pointer flex flex-row items-center text-sm font-medium ml-4"><span className={"cursor-pointer font-bold text-lg px-2"}>B</span>Auto</label>
-                        </div>
-                        <div className="cursor-pointer flex items-center px-8 py-5 border-t" onClick={() => setSelectedAwnser("C")}>
-                            <input
-                                checked={selectedAwnser === "C"}
-                                className={"cursor-pointer appearance-none w-4 h-4 rounded-full border-2 border-gray-700 ring-2 ring-orange-600 ring-opacity-100" + (selectedAwnser === "C" ? " bg-orange-500" : "")}
-                                type="radio"/>
-                            <label className="cursor-pointer flex flex-row items-center text-sm font-medium ml-4"><span className={"cursor-pointer font-bold text-lg px-2"}>C</span>Bus</label>
-                        </div>
-                        <div className="cursor-pointer flex items-center px-8 py-5 border-t" onClick={() => setSelectedAwnser("D")}>
-                            <input
-                                checked={selectedAwnser === "D"}
-                                className={"cursor-pointer appearance-none w-4 h-4 rounded-full border-2 border-gray-700 ring-2 ring-orange-600 ring-opacity-100" + (selectedAwnser === "D" ? " bg-orange-500" : "")}
-                                type="radio"/>
-                            <label className="cursor-pointer flex flex-row items-center text-sm font-medium ml-4"><span className={"cursor-pointer font-bold text-lg px-2"}>D</span>Lopend</label>
-                        </div>
+                        {quest.answers.map((a, idx) => (
+                            <div key={a.id} className={`cursor-pointer flex items-center px-8 py-5 ${idx > 0 ? 'border-t' : ''}`} onClick={() => setSelectedAwnser(a.id)}>
+                                <input
+                                    name="answers"
+                                    checked={selectedAwnser === a.id}
+                                    className={`cursor-pointer appearance-none w-4 h-4 rounded-full border-2 border-gray-700 ring-2 ring-orange-600 ring-opacity-100 ${selectedAwnser === a.id ? ' bg-orange-500' : ''}`}
+                                    type="radio" readOnly />
+                                <label className="cursor-pointer flex flex-row items-center text-sm font-medium ml-4"><span className={"cursor-pointer font-bold text-lg px-2"}>{String.fromCharCode(65 + idx)}</span>{a.answer}</label>
+                            </div>
+                        ))}
                     </form>
                 </div>
+                )}
+
+                {answerResult && (
+                    <div className="lg:col-span-3 px-8">
+                        {answerResult.error ? (
+                            <div className="text-red-400">Error: {answerResult.error}</div>
+                        ) : (
+                            <div className="text-green-400">{answerResult.correct ? 'Correct! +' + answerResult.points + ' points' : 'Incorrect'}</div>
+                        )}
+                    </div>
                 )}
 
             </div>
